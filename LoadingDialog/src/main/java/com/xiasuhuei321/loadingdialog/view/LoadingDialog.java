@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.xiasuhuei321.loadingdialog.IBackPress;
 import com.xiasuhuei321.loadingdialog.R;
 import com.xiasuhuei321.loadingdialog.manager.StyleManager;
 
@@ -52,6 +53,7 @@ public class LoadingDialog implements FinishDrawListener {
 
     private static StyleManager s = StyleManager.getDefault();
     private LoadCircleView mCircleLoadView;
+    private IBackPress iBackPress;
 
     public enum Speed {
         SPEED_ONE,
@@ -72,14 +74,15 @@ public class LoadingDialog implements FinishDrawListener {
         mLoadingDialog = new Dialog(context, R.style.loading_dialog) {
             @Override
             public void onBackPressed() {
-                if (interceptBack) {
-                    return;
+                //回调 点击返回键结束的
+                if (iBackPress != null) {
+                    iBackPress.onResult();
                 }
                 LoadingDialog.this.close();
             }
         };
         // 设置返回键无效
-        mLoadingDialog.setCancelable(!interceptBack);
+        mLoadingDialog.setCanceledOnTouchOutside(!interceptBack);
         mLoadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
@@ -323,7 +326,7 @@ public class LoadingDialog implements FinishDrawListener {
      */
     public LoadingDialog setInterceptBack(boolean interceptBack) {
         this.interceptBack = interceptBack;
-        mLoadingDialog.setCancelable(!interceptBack);
+        mLoadingDialog.setCanceledOnTouchOutside(!interceptBack);
         return this;
     }
 
@@ -461,5 +464,13 @@ public class LoadingDialog implements FinishDrawListener {
 
     public interface DismissListener {
         void dimiss();
+    }
+
+    public void setIBackPress(IBackPress iBackPress) {
+        this.iBackPress = iBackPress;
+    }
+
+    public IBackPress getIBackPress() {
+        return iBackPress;
     }
 }

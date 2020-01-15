@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.xiasuhuei321.loadingdialog.IBackPress;
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog;
 import com.xiasuhuei321.loadingdialog.view.SizeUtils;
 import com.xiasuhuei321.sample.base.BaseLoadingActivity;
@@ -83,6 +85,13 @@ public class MainActivity extends BaseLoadingActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.btn1:
                 ld.setLoadingText(null);
+                ld.setInterceptBack(true);
+                ld.setIBackPress(new IBackPress() {
+                    @Override
+                    public void onResult() {
+                        Log.e("sdf","heyzzt");
+                    }
+                });
                 showLoading();
                 h.sendEmptyMessageDelayed(SAVE_YOU, 5000);
                 break;

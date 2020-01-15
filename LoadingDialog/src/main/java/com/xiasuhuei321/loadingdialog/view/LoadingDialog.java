@@ -75,6 +75,9 @@ public class LoadingDialog implements FinishDrawListener {
             @Override
             public void onBackPressed() {
                 //回调 点击返回键结束的
+                if (interceptBack){
+                    return;
+                }
                 if (iBackPress != null) {
                     iBackPress.onResult();
                 }
@@ -82,7 +85,7 @@ public class LoadingDialog implements FinishDrawListener {
             }
         };
         // 设置返回键无效
-        mLoadingDialog.setCanceledOnTouchOutside(!interceptBack);
+        mLoadingDialog.setCanceledOnTouchOutside(false);
         mLoadingDialog.setContentView(layout, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT));
@@ -326,7 +329,7 @@ public class LoadingDialog implements FinishDrawListener {
      */
     public LoadingDialog setInterceptBack(boolean interceptBack) {
         this.interceptBack = interceptBack;
-        mLoadingDialog.setCanceledOnTouchOutside(!interceptBack);
+        mLoadingDialog.setCanceledOnTouchOutside(false);
         return this;
     }
 

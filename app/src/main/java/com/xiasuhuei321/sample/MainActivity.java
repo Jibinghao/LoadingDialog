@@ -85,7 +85,7 @@ public class MainActivity extends BaseLoadingActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.btn1:
                 ld.setLoadingText(null);
-                ld.setInterceptBack(true);
+                ld.setInterceptBack(false);
                 ld.setIBackPress(new IBackPress() {
                     @Override
                     public void onResult() {

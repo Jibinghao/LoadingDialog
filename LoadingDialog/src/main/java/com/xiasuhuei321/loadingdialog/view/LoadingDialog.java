@@ -54,6 +54,7 @@ public class LoadingDialog implements FinishDrawListener {
     private static StyleManager s = StyleManager.getDefault();
     private LoadCircleView mCircleLoadView;
     private IBackPress iBackPress;
+    long lastShowTime;
 
     public enum Speed {
         SPEED_ONE,
@@ -75,7 +76,11 @@ public class LoadingDialog implements FinishDrawListener {
             @Override
             public void onBackPressed() {
                 //回调 点击返回键结束的
-                if (interceptBack){
+                if (interceptBack) {
+                    return;
+                }
+                if (System.currentTimeMillis() - lastShowTime < 2 * 1000) {
+                    //loading至少展示2秒
                     return;
                 }
                 if (iBackPress != null) {
@@ -191,6 +196,7 @@ public class LoadingDialog implements FinishDrawListener {
      * 请在最后调用show，因此show返回值为void会使链式api断开
      */
     public void show() {
+        lastShowTime = System.currentTimeMillis();
         hideAll();
         if (loadStyle == STYLE_RING) {
             mLoadingView.setVisibility(View.VISIBLE);
@@ -469,8 +475,9 @@ public class LoadingDialog implements FinishDrawListener {
         void dimiss();
     }
 
-    public void setIBackPress(IBackPress iBackPress) {
+    public LoadingDialog setIBackPress(IBackPress iBackPress) {
         this.iBackPress = iBackPress;
+        return this;
     }
 
     public IBackPress getIBackPress() {
